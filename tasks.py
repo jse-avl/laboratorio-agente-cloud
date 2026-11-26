@@ -29,7 +29,9 @@ def completar_tarea(tareas, tarea_id):
 def pendientes(tareas, categoria=None):
     resultado = [t for t in tareas if not t["completada"]]
     if categoria is not None:
-        buscada = categoria.strip().casefold()
+        buscada = categoria.strip().casefold() if isinstance(categoria, str) else ""
+        if not buscada:
+            raise ValueError("La categoría es obligatoria")
         resultado = [
             t for t in resultado
             if t.get("categoria", CATEGORIA_POR_DEFECTO).casefold() == buscada
