@@ -9,7 +9,7 @@ def agregar_tarea(tareas, titulo, categoria=CATEGORIA_POR_DEFECTO):
     if not categoria:
         raise ValueError("La categoría es obligatoria")
     tarea = {
-        "id": len(tareas) + 1,
+        "id": max((t["id"] for t in tareas), default=0) + 1,
         "titulo": titulo,
         "completada": False,
         "categoria": categoria,
@@ -23,6 +23,13 @@ def completar_tarea(tareas, tarea_id):
         if tarea["id"] == tarea_id:
             tarea["completada"] = True
             return tarea
+    raise ValueError("Tarea no encontrada")
+
+
+def eliminar_tarea(tareas, tarea_id):
+    for indice, tarea in enumerate(tareas):
+        if tarea["id"] == tarea_id:
+            return tareas.pop(indice)
     raise ValueError("Tarea no encontrada")
 
 
